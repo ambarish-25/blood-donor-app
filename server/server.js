@@ -17,6 +17,7 @@ const geocoderOptions = {
     provider: 'locationiq',
     apiKey: process.env.LOCATIONIQ_API_KEY,
 };
+console.log("Checking API Key on Render:", process.env.LOCATIONIQ_API_KEY);
 const geocoder = NodeGeocoder(geocoderOptions);
 
 mongoose.connect(process.env.MONGO_URI)
