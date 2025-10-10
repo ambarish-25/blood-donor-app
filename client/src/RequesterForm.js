@@ -20,7 +20,7 @@ function RequesterForm({ setView }) {
         if (!requestId || matchedDonor) return; // Only run if we have a requestID and no match yet
 
         const intervalId = setInterval(() => {
-            axios.get(`http://localhost:5001/api/requests/status/${requestId}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/api/requests/status/${requestId}`)
             .then(response => {
                 if (response.data.status === 'matched') {
                     setMatchedDonor(response.data.matchedDonor);
@@ -53,7 +53,7 @@ function RequesterForm({ setView }) {
 
         if (!finalCoordinates && manualAddress) {
             try {
-                const geoResponse = await axios.post('http://localhost:5001/api/geocode', { address: manualAddress });
+                const geoResponse = await axios.post(`${process.env.REACT_APP_API_URL}/api/geocode`, { address: manualAddress });
                 finalCoordinates = geoResponse.data;
             } catch (err) {
                 setError('Could not find that location. Please be more specific.');
@@ -68,7 +68,7 @@ function RequesterForm({ setView }) {
         }
         
         const finalData = { ...formData, ...finalCoordinates };
-        axios.post('http://localhost:5001/api/requests', finalData)
+       axios.post(`${process.env.REACT_APP_API_URL}/api/donors`, finalData)
             .then(response => {
                 setPotentialDonors(response.data.potentialDonors);
                 setRequestId(response.data.requestId); // Save the request ID to start polling

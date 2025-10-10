@@ -38,7 +38,7 @@ function DonorForm({ setView }) {
         if (!finalCoordinates) {
             if (manualAddress) {
                 try {
-                    const geoResponse = await axios.post('http://localhost:5001/api/geocode', { address: manualAddress });
+                    const geoResponse = await axios.post(`${process.env.REACT_APP_API_URL}/api/geocode`, { address: manualAddress });
                     finalCoordinates = geoResponse.data;
                 } catch (err) {
                     setIsError(true);
@@ -55,7 +55,7 @@ function DonorForm({ setView }) {
         }
 
         const finalData = { ...formData, ...finalCoordinates };
-        axios.post('http://localhost:5001/api/donors', finalData)
+        axios.post(`${process.env.REACT_APP_API_URL}/api/donors`, finalData)
             .then(response => {
                 setIsError(false);
                 setMessage('Thank you! You have been registered successfully.');
