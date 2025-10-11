@@ -15,6 +15,7 @@ function RequesterForm({ setView }) {
     const [matchedDonor, setMatchedDonor] = useState(null);
     const [requestId, setRequestId] = useState(null);
 
+
     // This useEffect is for the status polling
     useEffect(() => {
         if (!requestId || matchedDonor) return; // Only run if we have a requestID and no match yet
@@ -68,7 +69,7 @@ function RequesterForm({ setView }) {
         }
         
         const finalData = { ...formData, ...finalCoordinates };
-       axios.post(`${process.env.REACT_APP_API_URL}/api/donors`, finalData)
+       axios.post(`${process.env.REACT_APP_API_URL}/api/requests`, finalData)
             .then(response => {
                 setPotentialDonors(response.data.potentialDonors);
                 setRequestId(response.data.requestId); // Save the request ID to start polling

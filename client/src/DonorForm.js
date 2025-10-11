@@ -38,7 +38,7 @@ function DonorForm({ setView }) {
         if (!finalCoordinates) {
             if (manualAddress) {
                 try {
-                    const geoResponse = await axios.post(`${process.env.REACT_APP_API_URL}/api/geocode`, { address: manualAddress });
+                    const geoResponse = await axios.post('http://localhost:5001/api/geocode', { address: manualAddress });
                     finalCoordinates = geoResponse.data;
                 } catch (err) {
                     setIsError(true);

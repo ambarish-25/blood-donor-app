@@ -36,13 +36,23 @@ const transporter = nodemailer.createTransport({
 
 app.post('/api/geocode', async (req, res) => {
     try {
-        const { address } = req.body;
+        let { address } = req.body;
         if (!address) return res.status(400).json({ message: 'Address is required.' });
+
+        // Append country to help LocationIQ accuracy
+        if (!address.toLowerCase().includes('india')) {
+            address = `${address}, India`;
+        }
+
         const data = await geocoder.geocode(address);
-        if (data.length === 0) return res.status(404).json({ message: 'Location not found.' });
+        if (!data || data.length === 0) {
+            return res.status(404).json({ message: `Location not found for "${address}". Try being more specific.` });
+        }
+
         const { latitude, longitude } = data[0];
         res.status(200).json({ latitude, longitude });
     } catch (error) {
+        console.error('Geocoding error:', error);
         res.status(500).json({ message: 'Geocoding service error.', error: error.message });
     }
 });
